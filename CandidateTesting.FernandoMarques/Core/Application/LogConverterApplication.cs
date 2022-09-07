@@ -13,7 +13,7 @@ namespace CandidateTesting.FernandoMarques.Core.Application
             _logConverterBusiness = logConverterBusiness;
         }
 
-        public void StartConverterLog(string[] args)
+        public async void StartConverterLog(string[] args)
         {
             if (args.Length != int.Parse(IndexArgResource.Count))
                 return;
@@ -24,9 +24,9 @@ namespace CandidateTesting.FernandoMarques.Core.Application
             if (!url.IsUrlFormat())
                 return;
 
-            var file = _logConverterBusiness.DownloadLog(url);
+            var content = await _logConverterBusiness.DownloadLog(url);
 
-            _logConverterBusiness.MakeNewFile(file, patch);
+            await _logConverterBusiness.MakeNewFile(content, patch);
         }
     }
 }

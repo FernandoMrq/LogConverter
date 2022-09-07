@@ -1,4 +1,5 @@
 ﻿using CandidateTesting.FernandoMarques.Adapters.Integration;
+using CandidateTesting.FernandoMarques.Adapters.Repository;
 using CandidateTesting.FernandoMarques.Core.Application;
 using CandidateTesting.FernandoMarques.Core.Business;
 using CandidateTesting.FernandoMarques.Core.Domain.Adapters;
@@ -22,6 +23,7 @@ namespace CandidateTesting.FernandoMarques.Infra
         public static void AddAdapters(IServiceCollection services)
         {
             services.AddScoped<IInputAddapter, MinhaCDNAddapter>();
+            services.AddScoped<IOutputAddapter, AgoraAddapter>();
         }
 
         public static void AddServices(ServiceCollection services)

@@ -1,44 +1,70 @@
-﻿using CandidateTesting.FernandoMarques.Core.Domain.Business;
+﻿using CandidateTesting.FernandoMarques.Core.Domain.Adapters;
+using CandidateTesting.FernandoMarques.Core.Domain.Business;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
+using System.Globalization;
+using System.Threading.Tasks;
 
 namespace CandidateTesting.FernandoMarques.Core.Business
 {
     public class LogConverterBusiness : ILogConverterBusiness
     {
-        public Stream DownloadLog(string url)
-        {
-            var logLines = new List<string>();
+        private readonly IInputAddapter _inputAddapter;
+        private readonly IOutputAddapter _outputAddapter;
 
-            var webClient = new WebClient();
-            var content = webClient.DownloadData(url);
-            var stream = new MemoryStream(content);
-            var sr = new StreamReader(stream);
-            string line;
-            while ((line = sr.ReadLine()) != null)
+        public LogConverterBusiness(IInputAddapter inputAddapter
+            , IOutputAddapter outputAddapter)
+        {
+            _inputAddapter = inputAddapter;
+            _outputAddapter = outputAddapter;
+        }
+
+        public async Task<List<string>> DownloadLog(string url)
+        {
+            return await _inputAddapter.GetLogList(url);
+        }
+
+        public async Task MakeNewFile(List<string> content, string filePatch)
+        {
+            ConvertLog(content);
+            await SaveNewFile(content, filePatch);
+        }
+
+        private List<string> ConvertLog(List<string> content)
+        {
+            var newLog = new List<string>();
+            MakeHeader(newLog);
+            foreach (var line in content)
             {
-                logLines.Add(line);
+                var splitByPipe = line.Split("|");
+                var splitByBar = splitByPipe[3].Replace("\"", String.Empty).Split("/");
+                var splitBySpace = splitByBar[1].Split(" ");
+                var roundedTime = (int)Math.Round(decimal.Parse(splitByPipe[4], new NumberFormatInfo() { NumberDecimalSeparator = "." }));
+
+                newLog.Add(
+                    "\"MINHA CDN\" " +
+                    splitByBar[0] +
+                    splitByPipe[1] + " " +
+                    "/" + splitBySpace[0] + " " +
+                    roundedTime + " " +
+                    splitByPipe[0] + " " +
+                    splitByPipe[2]
+                    );
             }
-            return default;
-            //return logLines;
-            //metodo para transformar stream em lista de strings
-            //ajustar métodos para receberem lista de strings
+
+            return newLog;
         }
 
-        public void MakeNewFile(Stream file, string filePatch)
+        private void MakeHeader(List<string> content)
         {
-            throw new System.NotImplementedException();
+            content.Add("#Version: 1.0");
+            content.Add("#Date: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+            content.Add("#Fields: provider http-method status-code uri-path time-taken response-size cache-status");
         }
 
-        private Stream ConvertLog(Stream file)
+        private async Task<bool> SaveNewFile(List<string> content, string filePatch)
         {
-            throw new System.NotImplementedException();
-        }
-
-        private bool SaveNewFile(Stream newFile)
-        {
-            throw new System.NotImplementedException();
+            return await _outputAddapter.SaveFile(content, filePatch);
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CandidateTesting.FernandoMarques.Core.Domain.Business
 {
     public interface ILogConverterBusiness
     {
-        public Stream DownloadLog(string url);
-        public void MakeNewFile(Stream file, string filePatch);
+        public Task<List<string>> DownloadLog(string url);
+        public Task MakeNewFile(List<string> content, string filePatch);
     }
 }
