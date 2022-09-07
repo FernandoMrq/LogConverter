@@ -6,6 +6,7 @@ using CandidateTesting.FernandoMarques.Core.Domain.Adapters;
 using CandidateTesting.FernandoMarques.Core.Domain.Business;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
+using System.IO.Abstractions;
 
 namespace CandidateTesting.FernandoMarques.Infra
 {
@@ -28,11 +29,17 @@ namespace CandidateTesting.FernandoMarques.Infra
             services.AddScoped<IOutputAddapter, AgoraAddapter>();
         }
 
+        public static void AddInfra(IServiceCollection services)
+        {
+            services.AddScoped<IFileSystem, FileSystem>();
+        }
+
         public static void AddServices(ServiceCollection services)
         {
             AddAdapters(services);
             AddBusiness(services);
             AddApplications(services);
+            AddInfra(services);
         }
     }
 }

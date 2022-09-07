@@ -1,7 +1,8 @@
 {
   "profiles": {
     "CandidateTesting.FernandoMarques": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "https://s3.amazonaws.com/uux-itaas-static/minha-cdn-logs/input-01.txt\r\n ./output/minhaCdn1.txt"
     }
   }
 }
