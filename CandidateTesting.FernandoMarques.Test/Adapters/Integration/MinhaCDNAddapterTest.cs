@@ -1,8 +1,9 @@
 ﻿using AutoFixture;
 using CandidateTesting.FernandoMarques.Adapters.Integration;
 using CandidateTesting.FernandoMarques.Core.Domain.Adapters;
+using CandidateTesting.FernandoMarques.Infra;
+using FluentAssertions;
 using NSubstitute;
-using System.IO.Abstractions;
 using Xunit;
 
 namespace CandidateTesting.FernandoMarques.Test.Adapters.Integration
@@ -10,33 +11,28 @@ namespace CandidateTesting.FernandoMarques.Test.Adapters.Integration
     public class MinhaCDNAddapterTest
     {
         private readonly IInputAddapter _inputAddapter;
+        private readonly IWebClient _webClient;
         private readonly Fixture _fixture;
-        private readonly IFileSystem _fileSystem;
         public MinhaCDNAddapterTest()
         {
             _fixture = new Fixture();
-            _fileSystem = Substitute.For<IFileSystem>();
-            _inputAddapter = new MinhaCDNAddapter();
+            _webClient = Substitute.For<IWebClient>();
+            _inputAddapter = new MinhaCDNAddapter(_webClient);
         }
 
         [Fact]
-        public async void SaveFile_ShouldCreateDirectory_WhenDirectoryDoesNotExist()
+        public async void GetLogList_ShouldReturnLogList_WhenAllIsOk()
         {
             //Arrange
-            //_fileSystem.Directory.Exists(Arg.Any<string>())
-            //    .Returns(false);
-
-            //_fileSystem.File.WriteAllLinesAsync(Arg.Any<string>(), Arg.Any<List<string>>())
-            //    .Returns(Task.CompletedTask);
-
-            var filePatch = _fixture.Create<string>();
-            //var content = _fixture.Create<List<string>>();
+            var url = _fixture.Create<string>();
+            var bytes = _fixture.Create<byte[]>();
+            _webClient.DownloadData(Arg.Any<string>()).Returns(bytes);
 
             //Act
-            var saved = await _inputAddapter.GetLogList(filePatch);
+            var logs = await _inputAddapter.GetLogList(url);
 
             //Assert
-            //saved.Should().BeTrue();
+            logs.Should().HaveCountGreaterThan(0);
         }
     }
 }

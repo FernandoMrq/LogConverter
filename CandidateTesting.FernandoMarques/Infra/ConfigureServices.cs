@@ -32,6 +32,7 @@ namespace CandidateTesting.FernandoMarques.Infra
         public static void AddInfra(IServiceCollection services)
         {
             services.AddScoped<IFileSystem, FileSystem>();
+            services.AddScoped<IWebClient, WebClient>();
         }
 
         public static void AddServices(ServiceCollection services)
