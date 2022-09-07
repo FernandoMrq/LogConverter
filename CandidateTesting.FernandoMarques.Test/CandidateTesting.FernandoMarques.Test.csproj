@@ -20,10 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Adapters\" />
+    <Folder Include="Adapters\Integration\" />
+    <Folder Include="Adapters\Repository\" />
     <Folder Include="Consoles\" />
-    <Folder Include="Core\" />
-    <Folder Include="Infra\" />
+    <Folder Include="Core\Application\" />
+    <Folder Include="Core\Business\" />
+    <Folder Include="Core\Domain\Adapters\" />
+    <Folder Include="Core\Domain\Business\" />
   </ItemGroup>
 
 </Project>

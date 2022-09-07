@@ -5,9 +5,11 @@ using CandidateTesting.FernandoMarques.Core.Business;
 using CandidateTesting.FernandoMarques.Core.Domain.Adapters;
 using CandidateTesting.FernandoMarques.Core.Domain.Business;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CandidateTesting.FernandoMarques.Infra
 {
+    [ExcludeFromCodeCoverage]
     public static class ConfigureServices
     {
         public static void AddApplications(IServiceCollection services)
