@@ -26,8 +26,8 @@ namespace CandidateTesting.FernandoMarques.Core.Business
 
         public async Task MakeNewFile(List<string> content, string filePatch)
         {
-            ConvertLog(content);
-            await SaveNewFile(content, filePatch);
+            var newLog = ConvertLog(content);
+            await _outputAddapter.SaveFile(newLog, filePatch);
         }
 
         private List<string> ConvertLog(List<string> content)
@@ -60,11 +60,6 @@ namespace CandidateTesting.FernandoMarques.Core.Business
             content.Add("#Version: 1.0");
             content.Add("#Date: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
             content.Add("#Fields: provider http-method status-code uri-path time-taken response-size cache-status");
-        }
-
-        private async Task<bool> SaveNewFile(List<string> content, string filePatch)
-        {
-            return await _outputAddapter.SaveFile(content, filePatch);
         }
     }
 }
