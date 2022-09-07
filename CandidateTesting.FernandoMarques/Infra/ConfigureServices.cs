@@ -16,13 +16,12 @@ namespace CandidateTesting.FernandoMarques.Infra
 
         public static void AddBusiness(IServiceCollection services)
         {
-            services.AddScoped<IConsoleBusiness, ConsoleBusiness>();
             services.AddScoped<ILogConverterBusiness, LogConverterBusiness>();
         }
 
         public static void AddAdapters(IServiceCollection services)
         {
-            services.AddScoped<ILogConverterAddapter, MinhaCDNAddapter>();
+            services.AddScoped<IInputAddapter, MinhaCDNAddapter>();
         }
 
         public static void AddServices(ServiceCollection services)

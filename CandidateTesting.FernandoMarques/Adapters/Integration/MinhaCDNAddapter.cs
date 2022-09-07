@@ -2,7 +2,7 @@
 
 namespace CandidateTesting.FernandoMarques.Adapters.Integration
 {
-    public class MinhaCDNAddapter : ILogConverterAddapter
+    public class MinhaCDNAddapter : IInputAddapter
     {
 
     }

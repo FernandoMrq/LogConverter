@@ -2,6 +2,6 @@
 {
     public interface ILogConverterApplication
     {
-        public void StartConverterLog();
+        public void StartConverterLog(string[] args);
     }
 }
