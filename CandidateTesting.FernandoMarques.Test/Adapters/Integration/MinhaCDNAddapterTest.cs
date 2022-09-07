@@ -4,6 +4,8 @@ using CandidateTesting.FernandoMarques.Core.Domain.Adapters;
 using CandidateTesting.FernandoMarques.Infra;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
+using System;
 using Xunit;
 
 namespace CandidateTesting.FernandoMarques.Test.Adapters.Integration
@@ -33,6 +35,21 @@ namespace CandidateTesting.FernandoMarques.Test.Adapters.Integration
 
             //Assert
             logs.Should().HaveCountGreaterThan(0);
+        }
+
+        [Fact]
+        public async void GetLogList_ShouldReturnDefault_WhenThrowsInternalException()
+        {
+            //Arrange
+            var url = _fixture.Create<string>();
+            var bytes = _fixture.Create<byte[]>();
+            _webClient.DownloadData(Arg.Any<string>()).Throws(new Exception());
+
+            //Act
+            var logs = await _inputAddapter.GetLogList(url);
+
+            //Assert
+            logs.Should().BeNull();
         }
     }
 }

@@ -24,14 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Consoles\" />
-    <Folder Include="Core\Application\" />
-    <Folder Include="Core\Business\" />
-    <Folder Include="Core\Domain\Adapters\" />
-    <Folder Include="Core\Domain\Business\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CandidateTesting.FernandoMarques\CandidateTesting.FernandoMarques.csproj" />
   </ItemGroup>
 
